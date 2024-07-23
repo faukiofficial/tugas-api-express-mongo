@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Input from '../../components/Input';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,7 +9,6 @@ import './index.scss';
 
 const Edit = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [product, setProduct] = useState({
     name: '',
     price: '',
