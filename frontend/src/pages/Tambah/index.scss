@@ -1,0 +1,65 @@
+/* Styling untuk form control umum */
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    margin-top: 12px; /* Jarak vertikal antara elemen form */
+    margin-bottom: 12px; /* Jarak vertikal antara elemen form */
+    font-size: 14px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    
+    &:focus {
+      border-color: #007bff; /* Warna border saat fokus */
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Shadow saat fokus */
+      outline: none;
+    }
+  }
+  
+  /* Styling untuk input file */
+  input[type="file"] {
+    margin-top: 12px; /* Jarak vertikal antara elemen form */
+    margin-bottom: 12px; /* Jarak vertikal antara elemen form */
+  }
+  
+  /* Styling untuk checkbox */
+  input[type="checkbox"] {
+    margin-right: 8px;
+    margin-top: 12px; /* Jarak vertikal antara elemen form */
+    margin-bottom: 12px; /* Jarak vertikal antara elemen form */
+  }
+  
+  /* Styling untuk card */
+  .card {
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto; /* Pusatkan card di tengah dengan margin otomatis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #fff;
+  }
+  
+  /* Styling untuk tombol */
+  .btn {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+  
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+  

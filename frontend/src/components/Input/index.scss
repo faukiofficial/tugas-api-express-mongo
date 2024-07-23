@@ -1,0 +1,48 @@
+/* Styling untuk group elemen form */
+.form-group {
+    margin-bottom: 20px;
+  }
+  
+  /* Styling untuk label */
+  .form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  /* Styling untuk input umum */
+  .form-group input[type="text"],
+  .form-group input[type="number"],
+  .form-group input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  /* Styling untuk input saat fokus */
+  .form-group input[type="text"]:focus,
+  .form-group input[type="number"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+  }
+  
+  /* Styling untuk input file */
+  .form-group input[type="file"] {
+    padding: 0;
+    border: none;
+  }
+  
+  /* Styling untuk checkbox */
+  .form-group input[type="checkbox"] {
+    margin-right: 8px;
+    margin-top: 6px;
+    margin-bottom: 16px;
+  }
+  
