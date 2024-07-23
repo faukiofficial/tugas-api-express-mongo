@@ -93,7 +93,6 @@ const Edit = () => {
       }
 
       toast.success('Produk berhasil diperbarui!');
-      navigate('/'); // Redirect to home or another page after success
     } catch (error) {
       toast.error(error.message);
     }
