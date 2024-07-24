@@ -33,6 +33,16 @@ const Detail = () => {
 
       <table className="table">
         <tbody>
+        <tr>
+            <td>Image</td>
+            <td>: 
+              {product.image ? (
+                <img src={`data:image/jpeg;base64,${product.image}`} alt={product.name} width="300" />
+              ) : (
+                ' No image available'
+              )}
+            </td>
+          </tr>
           <tr>
             <td>ID</td>
             <td>: {product._id}</td>
@@ -53,16 +63,7 @@ const Detail = () => {
             <td>Status</td>
             <td>: {product.status ? 'Available' : 'Unavailable'}</td>
           </tr>
-          <tr>
-            <td>Image</td>
-            <td>: 
-              {product.image ? (
-                <img src={`data:image/jpeg;base64,${product.image}`} alt={product.name} width="100" />
-              ) : (
-                ' No image available'
-              )}
-            </td>
-          </tr>
+          
         </tbody>
       </table>
     </div>
