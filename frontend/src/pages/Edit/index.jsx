@@ -5,8 +5,7 @@ import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
-import { Buffer } from 'buffer'; // Import Buffer
+import 'react-confirm-alert/src/react-confirm-alert.css';mport Buffer
 import './index.scss';
 
 const validationSchema = Yup.object({
@@ -23,7 +22,7 @@ const Edit = () => {
     price: '',
     stock: '',
     status: false,
-    image: null // Change from image_url to image
+    image: null
   });
   const [newImage, setNewImage] = useState(null);
   const [imageSelected, setImageSelected] = useState(false);
@@ -38,7 +37,7 @@ const Edit = () => {
           price: data.price,
           stock: data.stock,
           status: data.status,
-          image: data.image // Use image property
+          image: data.image
         });
       } catch (error) {
         console.error('Error fetching product data:', error);
@@ -105,11 +104,6 @@ const Edit = () => {
     formik.setFieldValue('image', event.target.files[0]);
   };
 
-  // Convert binary data to base64 URL
-  const toBase64 = (binaryData) => {
-    return `data:image/jpeg;base64,${Buffer.from(binaryData).toString('base64')}`;
-  };
-
   return (
     <div className="main">
       <div className="card">
@@ -173,7 +167,7 @@ const Edit = () => {
             {product.image && (
               <div className="image-container">
                 <img 
-                  src={toBase64(product.image.data)} 
+                  src={`data:image/jpeg;base64,${product.image}`}
                   alt="Produk" 
                   className="product-image" 
                   width="100"

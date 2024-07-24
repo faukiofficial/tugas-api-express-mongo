@@ -33,13 +33,18 @@ router.post("/product", upload.single("image"), (req, res) => {
   
   if (image) {
     const imgBuffer = fs.readFileSync(image.path);
+    const base64Image = imgBuffer.toString('base64');
     Product.create({
       name,
       price,
       stock,
       status,
-      image: imgBuffer
+      image: base64Image
     })
+      .then((result) => res.send(result))
+      .catch((error) => res.send(error));
+  } else {
+    Product.create({ name, price, stock, status })
       .then((result) => res.send(result))
       .catch((error) => res.send(error));
   }
@@ -54,7 +59,8 @@ router.put("/product/:id", upload.single("image"), (req, res) => {
 
   if (image) {
     const imgBuffer = fs.readFileSync(image.path);
-    updateData.image = imgBuffer;
+    const base64Image = imgBuffer.toString('base64');
+    updateData.image = base64Image;
   }
 
   Product.findByIdAndUpdate(id, updateData, { new: true })
