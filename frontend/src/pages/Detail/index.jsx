@@ -10,7 +10,7 @@ const Detail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/v2/product/${id}`);
+        const response = await fetch(`https://cruds-eduwork-server.onrender.com/api/v2/product/${id}`);
         if (!response.ok) {
           throw new Error('Product not found');
         }

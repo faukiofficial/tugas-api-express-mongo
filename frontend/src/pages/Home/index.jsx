@@ -14,7 +14,7 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/v2/product?search=${search}`);
+        const response = await fetch(`https://cruds-eduwork-server.onrender.com/api/v2/product?search=${search}`);
         const data = await response.json();
         setProducts(data);
       } catch (error) {
@@ -38,7 +38,7 @@ const Home = () => {
           label: 'Iya',
           onClick: async () => {
             try {
-              await fetch(`http://localhost:3000/api/v2/product/${id}`, {
+              await fetch(`https://cruds-eduwork-server.onrender.com/api/v2/product/${id}`, {
                 method: 'DELETE',
               });
               setProducts(products.filter(product => product._id !== id));

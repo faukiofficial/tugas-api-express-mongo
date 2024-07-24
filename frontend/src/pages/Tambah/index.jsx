@@ -22,7 +22,7 @@ const Tambah = () => {
     formData.append('image', image);
 
     try {
-      const response = await fetch('http://localhost:3000/api/v2/product', {
+      const response = await fetch('https://cruds-eduwork-server.onrender.com/api/v2/product', {
         method: 'POST',
         body: formData,
       });

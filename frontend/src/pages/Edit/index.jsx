@@ -23,7 +23,7 @@ const Edit = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/v2/product/${id}`);
+        const response = await fetch(`https://cruds-eduwork-server.onrender.com/api/v2/product/${id}`);
         const data = await response.json();
         setProduct({
           name: data.name,
@@ -83,7 +83,7 @@ const Edit = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/v2/product/${id}`, {
+      const response = await fetch(`https://cruds-eduwork-server.onrender.com/api/v2/product/${id}`, {
         method: 'PUT',
         body: formData
       });
