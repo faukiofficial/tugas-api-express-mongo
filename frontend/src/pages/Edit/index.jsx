@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';mport Buffer
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import './index.scss';
 
 const validationSchema = Yup.object({
@@ -22,7 +22,7 @@ const Edit = () => {
     price: '',
     stock: '',
     status: false,
-    image: null
+    image: ''
   });
   const [newImage, setNewImage] = useState(null);
   const [imageSelected, setImageSelected] = useState(false);
@@ -167,7 +167,7 @@ const Edit = () => {
             {product.image && (
               <div className="image-container">
                 <img 
-                  src={`data:image/jpeg;base64,${product.image}`}
+                  src={`data:image/jpeg;base64,${product.image}`} 
                   alt="Produk" 
                   className="product-image" 
                   width="100"
