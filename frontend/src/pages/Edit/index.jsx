@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useParams } from 'react-router-dom';
-import Input from '../../components/Input';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { Buffer } from 'buffer'; // Import Buffer
 import './index.scss';
 
 const validationSchema = Yup.object({
@@ -14,19 +14,33 @@ const validationSchema = Yup.object({
   price: Yup.number().required('Harga produk diperlukan').positive('Harga harus positif'),
   stock: Yup.number().required('Stock produk diperlukan').min(0, 'Stock tidak boleh negatif'),
   status: Yup.boolean(),
-  image: Yup.mixed()
+  image: Yup.mixed() // Handle image file
 });
 
 const Edit = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState({
+    name: '',
+    price: '',
+    stock: '',
+    status: false,
+    image: null // Change from image_url to image
+  });
+  const [newImage, setNewImage] = useState(null);
+  const [imageSelected, setImageSelected] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/v2/product/${id}`);
+        const response = await fetch(`https://cruds-eduwork-server.onrender.com/api/v2/product/${id}`);
         const data = await response.json();
-        setProduct(data);
+        setProduct({
+          name: data.name,
+          price: data.price,
+          stock: data.stock,
+          status: data.status,
+          image: data.image // Use image property
+        });
       } catch (error) {
         console.error('Error fetching product data:', error);
       }
@@ -37,10 +51,10 @@ const Edit = () => {
 
   const formik = useFormik({
     initialValues: {
-      name: product?.name || '',
-      price: product?.price || '',
-      stock: product?.stock || '',
-      status: product?.status || false,
+      name: product.name,
+      price: product.price,
+      stock: product.stock,
+      status: product.status,
       image: null
     },
     validationSchema: validationSchema,
@@ -51,8 +65,8 @@ const Edit = () => {
       formData.append('price', values.price);
       formData.append('stock', values.stock);
       formData.append('status', values.status);
-      if (values.image) {
-        formData.append('image', values.image);
+      if (newImage) {
+        formData.append('image', newImage);
       }
 
       confirmAlert({
@@ -63,7 +77,7 @@ const Edit = () => {
             label: 'Iya',
             onClick: async () => {
               try {
-                const response = await fetch(`http://localhost:3000/api/v2/product/${id}`, {
+                const response = await fetch(`https://cruds-eduwork-server.onrender.com/api/v2/product/${id}`, {
                   method: 'PUT',
                   body: formData
                 });
@@ -87,9 +101,16 @@ const Edit = () => {
     }
   });
 
-  if (!product) {
-    return <div>Loading...</div>;
-  }
+  const handleImageChange = (event) => {
+    setNewImage(event.target.files[0]);
+    setImageSelected(true);
+    formik.setFieldValue('image', event.target.files[0]);
+  };
+
+  // Convert binary data to base64 URL
+  const toBase64 = (binaryData) => {
+    return `data:image/jpeg;base64,${Buffer.from(binaryData).toString('base64')}`;
+  };
 
   return (
     <div className="main">
@@ -102,21 +123,27 @@ const Edit = () => {
             <input
               type="text"
               name="name"
-              onChange={formik.handleChange}
+              placeholder="Nama Produk..."
               value={formik.values.name}
+              onChange={formik.handleChange}
             />
-            {formik.errors.name && formik.touched.name ? <div className="error">{formik.errors.name}</div> : null}
+            {formik.errors.name && formik.touched.name ? (
+              <div className="error">{formik.errors.name}</div>
+            ) : null}
           </div>
-
+          
           <div className="form-group">
             <label>Harga Produk</label>
             <input
               type="number"
               name="price"
-              onChange={formik.handleChange}
+              placeholder="Harga Produk..."
               value={formik.values.price}
+              onChange={formik.handleChange}
             />
-            {formik.errors.price && formik.touched.price ? <div className="error">{formik.errors.price}</div> : null}
+            {formik.errors.price && formik.touched.price ? (
+              <div className="error">{formik.errors.price}</div>
+            ) : null}
           </div>
 
           <div className="form-group">
@@ -124,10 +151,13 @@ const Edit = () => {
             <input
               type="number"
               name="stock"
-              onChange={formik.handleChange}
+              placeholder="Stock Produk..."
               value={formik.values.stock}
+              onChange={formik.handleChange}
             />
-            {formik.errors.stock && formik.touched.stock ? <div className="error">{formik.errors.stock}</div> : null}
+            {formik.errors.stock && formik.touched.stock ? (
+              <div className="error">{formik.errors.stock}</div>
+            ) : null}
           </div>
 
           <div className="form-group">
@@ -142,17 +172,33 @@ const Edit = () => {
 
           <div className="form-group">
             <label>Gambar Produk</label>
-            {product.image_url && (
+            {product.image && (
               <div className="image-container">
-                <img src={product.image_url} alt="Produk" className="product-image" />
+                <img 
+                  src={toBase64(product.image.data)} 
+                  alt="Produk" 
+                  className="product-image" 
+                  width="100"
+                />
+                <div className={`overlay ${imageSelected ? 'selected' : ''}`}>
+                  <span 
+                    className="change-image-text" 
+                    onClick={() => document.getElementById('imageInput').click()}
+                  >
+                    {imageSelected ? "Klik 'Simpan' untuk mengganti foto" : "Ganti gambar"}
+                  </span>
+                </div>
               </div>
             )}
             <input
               type="file"
-              name="image"
-              onChange={(event) => formik.setFieldValue('image', event.currentTarget.files[0])}
+              id="imageInput"
+              onChange={handleImageChange}
+              style={{ display: 'none' }}
             />
-            {formik.errors.image && formik.touched.image ? <div className="error">{formik.errors.image}</div> : null}
+            {formik.errors.image && formik.touched.image ? (
+              <div className="error">{formik.errors.image}</div>
+            ) : null}
           </div>
 
           <button type="submit" className="btn btn-primary">Simpan</button>
