@@ -18,8 +18,8 @@ const productSchema = mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  image_url: {
-    type: String
+  image: {
+    type: Buffer
   }
 });
 

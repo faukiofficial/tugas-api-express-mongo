@@ -5,6 +5,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import CSS
 import './index.scss';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Buffer } from 'buffer';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -56,6 +57,11 @@ const Home = () => {
     });
   };
 
+  // Function to convert binary data to base64
+  const toBase64 = (binaryData) => {
+    return `data:image/jpeg;base64,${Buffer.from(binaryData).toString('base64')}`;
+  };
+
   return (
     <div className="main">
       <Link to="/tambah" className="btn btn-primary">Tambah Produk</Link>
@@ -72,6 +78,7 @@ const Home = () => {
           <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Image</th>
             <th className="text-right">Price</th>
             <th className="text-right">Status</th>
             <th className="text-center">Action</th>
@@ -82,6 +89,11 @@ const Home = () => {
             <tr key={product._id}>
               <td>{product._id}</td>
               <td>{product.name}</td>
+              <td>
+                {product.image && (
+                  <img src={toBase64(product.image.data)} alt={product.name} width="50" />
+                )}
+              </td>
               <td className="text-right">RP. {product.price.toLocaleString()}</td>
               <td className="text-right">{product.status ? 'Available' : 'Unavailable'}</td>
               <td className="text-center">

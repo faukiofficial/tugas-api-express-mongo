@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Input from '../../components/Input';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { Buffer } from 'buffer'; // Import Buffer
 import './index.scss';
 
 const Edit = () => {
@@ -14,7 +15,7 @@ const Edit = () => {
     price: '',
     stock: '',
     status: false,
-    image_url: ''
+    image: null // Change from image_url to image
   });
   const [newImage, setNewImage] = useState(null);
   const [imageSelected, setImageSelected] = useState(false);
@@ -29,7 +30,7 @@ const Edit = () => {
           price: data.price,
           stock: data.stock,
           status: data.status,
-          image_url: data.image_url
+          image: data.image // Use image property
         });
       } catch (error) {
         console.error('Error fetching product data:', error);
@@ -97,6 +98,11 @@ const Edit = () => {
     }
   };
 
+  // Convert binary data to base64 URL
+  const toBase64 = (binaryData) => {
+    return `data:image/jpeg;base64,${Buffer.from(binaryData).toString('base64')}`;
+  };
+
   return (
     <div className="main">
       <div className="card">
@@ -136,11 +142,19 @@ const Edit = () => {
           />
           <div className="form-group">
             <label>Gambar Produk</label>
-            {product.image_url && (
+            {product.image && (
               <div className="image-container">
-                <img src={product.image_url} alt="Produk" className="product-image" />
+                <img 
+                  src={toBase64(product.image.data)} 
+                  alt="Produk" 
+                  className="product-image" 
+                  width="100"
+                />
                 <div className={`overlay ${imageSelected ? 'selected' : ''}`}>
-                  <span className="change-image-text" onClick={() => document.getElementById('imageInput').click()}>
+                  <span 
+                    className="change-image-text" 
+                    onClick={() => document.getElementById('imageInput').click()}
+                  >
                     {imageSelected ? "Klik 'Simpan' untuk mengganti foto" : "Ganti gambar"}
                   </span>
                 </div>

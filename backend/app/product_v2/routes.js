@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
-const path = require("path");
 const fs = require("fs");
 const Product = require("./model");
 
@@ -31,15 +30,15 @@ router.get("/product/:id", (req, res) => {
 router.post("/product", upload.single("image"), (req, res) => {
   const { name, price, stock, status } = req.body;
   const image = req.file;
+  
   if (image) {
-    const target = path.join(__dirname, "../../uploads", image.originalname);
-    fs.renameSync(image.path, target);
+    const imgBuffer = fs.readFileSync(image.path);
     Product.create({
       name,
       price,
       stock,
       status,
-      image_url: `http://localhost:3000/public/${image.originalname}`,
+      image: imgBuffer
     })
       .then((result) => res.send(result))
       .catch((error) => res.send(error));
@@ -52,10 +51,10 @@ router.put("/product/:id", upload.single("image"), (req, res) => {
   const { name, price, stock, status } = req.body;
   const image = req.file;
   const updateData = { name, price, stock, status };
+
   if (image) {
-    const target = path.join(__dirname, "../../uploads", image.originalname);
-    fs.renameSync(image.path, target);
-    updateData.image_url = `http://localhost:3000/public/${image.originalname}`;
+    const imgBuffer = fs.readFileSync(image.path);
+    updateData.image = imgBuffer;
   }
 
   Product.findByIdAndUpdate(id, updateData, { new: true })

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { Buffer } from 'buffer'; // Import Buffer
 import './index.scss';
 
 const Detail = () => {
@@ -22,6 +23,11 @@ const Detail = () => {
 
     fetchProduct();
   }, [id]);
+
+  // Convert binary data to base64 URL
+  const toBase64 = (binaryData) => {
+    return `data:image/jpeg;base64,${Buffer.from(binaryData).toString('base64')}`;
+  };
 
   if (!product) {
     return <div>Loading...</div>;
@@ -56,8 +62,8 @@ const Detail = () => {
           <tr>
             <td>Image</td>
             <td>: 
-              {product.image_url ? (
-                <img src={product.image_url} alt={product.name} width="100" />
+              {product.image ? (
+                <img src={toBase64(product.image.data)} alt={product.name} width="100" />
               ) : (
                 ' No image available'
               )}

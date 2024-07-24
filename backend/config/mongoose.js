@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 mongoose.connect(
-  "mongodb://admin:admin@localhost:27017/eduwork-mongoose?authSource=admin"
+  "mongodb+srv://test1234:test1234@notesapp.ila5n9h.mongodb.net/eduwork-mongoose?retryWrites=true&w=majority&appName=notesapp"
 );
 
 const db = mongoose.connection;
