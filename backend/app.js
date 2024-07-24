@@ -8,7 +8,7 @@ const productRouterV2 = require('./app/product_v2/routes')
 const logger = require('morgan')
 
 app.use(logger('dev'))
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: 'https://tugas-api-express-mongo.onrender.com' }));
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 app.use('/public', express.static(path.join(__dirname, 'uploads')))
