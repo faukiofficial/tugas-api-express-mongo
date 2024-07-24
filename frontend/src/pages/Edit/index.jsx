@@ -13,8 +13,7 @@ const validationSchema = Yup.object({
   name: Yup.string().required('Nama produk diperlukan'),
   price: Yup.number().required('Harga produk diperlukan').positive('Harga harus positif'),
   stock: Yup.number().required('Stock produk diperlukan').min(0, 'Stock tidak boleh negatif'),
-  status: Yup.boolean(),
-  image: Yup.mixed() // Handle image file
+  status: Yup.boolean()
 });
 
 const Edit = () => {
@@ -54,8 +53,7 @@ const Edit = () => {
       name: product.name,
       price: product.price,
       stock: product.stock,
-      status: product.status,
-      image: null
+      status: product.status
     },
     validationSchema: validationSchema,
     enableReinitialize: true,
@@ -196,9 +194,6 @@ const Edit = () => {
               onChange={handleImageChange}
               style={{ display: 'none' }}
             />
-            {formik.errors.image && formik.touched.image ? (
-              <div className="error">{formik.errors.image}</div>
-            ) : null}
           </div>
 
           <button type="submit" className="btn btn-primary">Simpan</button>
