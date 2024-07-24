@@ -1,7 +1,7 @@
 const { MongoClient } = require("mongodb");
 
 const url =
-  "mongodb://eduwork:12345678@localhost:27017/?authSource=eduwork-native";
+  "mongodb+srv://test1234:test1234@notesapp.ila5n9h.mongodb.net/eduwork-native?retryWrites=true&w=majority&appName=notesapp";
 
 const client = new MongoClient(url);
 

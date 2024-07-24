@@ -1,85 +1,114 @@
-import { useState } from 'react';
-import Input from '../../components/Input';
-import './index.scss';
+import React from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './index.scss';
+
+const validationSchema = Yup.object({
+  name: Yup.string().required('Nama produk diperlukan'),
+  price: Yup.number().required('Harga produk diperlukan').positive('Harga harus positif'),
+  stock: Yup.number().required('Stock produk diperlukan').min(0, 'Stock tidak boleh negatif'),
+  status: Yup.boolean(),
+  image: Yup.mixed().required('Gambar produk diperlukan')
+});
 
 const Tambah = () => {
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [stock, setStock] = useState('');
-  const [status, setStatus] = useState(true);
-  const [image, setImage] = useState(null);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('price', price);
-    formData.append('stock', stock);
-    formData.append('status', status);
-    formData.append('image', image);
-
-    try {
-      const response = await fetch('https://cruds-eduwork-server.onrender.com/api/v2/product', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Gagal menambah produk');
-      } else {
-        toast.success('Produk berhasil ditambah!');
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      price: '',
+      stock: '',
+      status: false,
+      image: null
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      const formData = new FormData();
+      formData.append('name', values.name);
+      formData.append('price', values.price);
+      formData.append('stock', values.stock);
+      formData.append('status', values.status);
+      if (values.image) {
+        formData.append('image', values.image);
       }
-    } catch (error) {
-      toast.error(error.message);
+
+      try {
+        const response = await fetch('http://localhost:3000/api/v2/product', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error('Gagal menambahkan produk');
+        }
+
+        toast.success('Produk berhasil ditambahkan!');
+      } catch (error) {
+        toast.error(error.message);
+      }
     }
-  };
+  });
 
   return (
     <div className="main">
       <div className="card">
         <h2>Tambah Produk</h2>
         <br />
-        <form onSubmit={handleSubmit}>
-          <Input
-            name="name"
-            type="text"
-            placeholder="Nama Produk..."
-            label="Nama"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <Input
-            name="price"
-            type="number"
-            placeholder="Harga Produk..."
-            label="Harga"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-          <Input
-            name="stock"
-            type="number"
-            placeholder="Stock Produk..."
-            label="Stock"
-            value={stock}
-            onChange={(e) => setStock(e.target.value)}
-          />
-          <Input
-            name="status"
-            type="checkbox"
-            label="Active"
-            checked={status}
-            onChange={(e) => setStatus(e.target.checked)}
-          />
-          <Input
-            name="image"
-            type="file"
-            label="Gambar"
-            onChange={(e) => setImage(e.target.files[0])}
-          />
+        <form onSubmit={formik.handleSubmit}>
+          <div className="form-group">
+            <label>Nama Produk</label>
+            <input
+              type="text"
+              name="name"
+              onChange={formik.handleChange}
+              value={formik.values.name}
+            />
+            {formik.errors.name && formik.touched.name ? <div className="error">{formik.errors.name}</div> : null}
+          </div>
+
+          <div className="form-group">
+            <label>Harga Produk</label>
+            <input
+              type="number"
+              name="price"
+              onChange={formik.handleChange}
+              value={formik.values.price}
+            />
+            {formik.errors.price && formik.touched.price ? <div className="error">{formik.errors.price}</div> : null}
+          </div>
+
+          <div className="form-group">
+            <label>Stock Produk</label>
+            <input
+              type="number"
+              name="stock"
+              onChange={formik.handleChange}
+              value={formik.values.stock}
+            />
+            {formik.errors.stock && formik.touched.stock ? <div className="error">{formik.errors.stock}</div> : null}
+          </div>
+
+          <div className="form-group">
+            <label>Status</label>
+            <input
+              type="checkbox"
+              name="status"
+              checked={formik.values.status}
+              onChange={formik.handleChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Gambar Produk</label>
+            <input
+              type="file"
+              name="image"
+              onChange={(event) => formik.setFieldValue('image', event.currentTarget.files[0])}
+            />
+            {formik.errors.image && formik.touched.image ? <div className="error">{formik.errors.image}</div> : null}
+          </div>
+
           <button type="submit" className="btn btn-primary">Simpan</button>
         </form>
       </div>
