@@ -11,7 +11,9 @@ app.use(logger('dev'))
 app.use(cors({ origin: 'https://tugas-api-express-mongo.onrender.com' }));
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
-app.use('/public', express.static(path.join(__dirname, 'uploads')))
+// app.use('/public', express.static(path.join(__dirname, 'uploads')))
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+
 app.use('/api/v1', productRouterV1)
 app.use('/api/v2', productRouterV2)
 app.use((req, res, next) => {
