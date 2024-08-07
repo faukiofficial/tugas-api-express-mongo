@@ -164,20 +164,20 @@ const Edit = () => {
 
           <div className="form-group">
             <label>Gambar Produk</label>
-            {product.image && (
+            {product.image && !imageSelected && (
               <div className="image-container">
                 <img 
-                  src={`data:image/jpeg;base64,${product.image}`} 
+                  src={`https://cruds-eduwork-server.onrender.com/uploads/${product.image}`} 
                   alt="Produk" 
                   className="product-image" 
                   width="100"
                 />
-                <div className={`overlay ${imageSelected ? 'selected' : ''}`}>
+                <div className="overlay">
                   <span 
                     className="change-image-text" 
                     onClick={() => document.getElementById('imageInput').click()}
                   >
-                    {imageSelected ? "Klik 'Simpan' untuk mengganti foto" : "Ganti gambar"}
+                    Ganti gambar
                   </span>
                 </div>
               </div>

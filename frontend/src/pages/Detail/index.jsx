@@ -5,6 +5,7 @@ import './index.scss';
 const Detail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -17,13 +18,15 @@ const Detail = () => {
         setProduct(data);
       } catch (error) {
         console.error('Error fetching product data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchProduct();
   }, [id]);
 
-  if (!product) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
@@ -33,11 +36,15 @@ const Detail = () => {
 
       <table className="table">
         <tbody>
-        <tr>
+          <tr>
             <td>Image</td>
             <td>: 
               {product.image ? (
-                <img src={`data:image/jpeg;base64,${product.image}`} alt={product.name} width="300" />
+                <img 
+                  src={`https://cruds-eduwork-server.onrender.com/uploads/${product.image}`} 
+                  alt={product.name} 
+                  width="300" 
+                />
               ) : (
                 ' No image available'
               )}
@@ -63,11 +70,10 @@ const Detail = () => {
             <td>Status</td>
             <td>: {product.status ? 'Available' : 'Unavailable'}</td>
           </tr>
-          
         </tbody>
       </table>
     </div>
   );
-}
+};
 
 export default Detail;

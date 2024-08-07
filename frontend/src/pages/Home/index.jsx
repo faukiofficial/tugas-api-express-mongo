@@ -85,7 +85,7 @@ const Home = () => {
               <td>{product.name}</td>
               <td>
                 {product.image && (
-                  <img src={`data:image/jpeg;base64,${product.image}`} alt={product.name} width="50" />
+                  <img src={`https://cruds-eduwork-server.onrender.com${product.image}`} alt={product.name} width="50" />
                 )}
               </td>
               <td className="text-right">RP. {product.price.toLocaleString()}</td>

@@ -33,7 +33,7 @@ const Tambah = () => {
       }
 
       try {
-        const response = await fetch('http://localhost:3000/api/v2/product', {
+        const response = await fetch('https://cruds-eduwork-server.onrender.com/api/v2/product', {
           method: 'POST',
           body: formData
         });
@@ -43,6 +43,7 @@ const Tambah = () => {
         }
 
         toast.success('Produk berhasil ditambahkan!');
+        formik.resetForm();
       } catch (error) {
         toast.error(error.message);
       }
