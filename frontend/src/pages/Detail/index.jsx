@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import './index.scss';
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import "./index.scss";
 
 const Detail = () => {
   const { id } = useParams();
@@ -10,14 +10,16 @@ const Detail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`https://cruds-eduwork-server.onrender.com/api/v2/product/${id}`);
+        const response = await fetch(
+          `https://cruds-eduwork-server.onrender.com/api/v2/product/${id}`
+        );
         if (!response.ok) {
-          throw new Error('Product not found');
+          throw new Error("Product not found");
         }
         const data = await response.json();
         setProduct(data);
       } catch (error) {
-        console.error('Error fetching product data:', error);
+        console.error("Error fetching product data:", error);
       } finally {
         setLoading(false);
       }
@@ -32,21 +34,24 @@ const Detail = () => {
 
   return (
     <div className="main">
-      <Link to="/" className="btn btn-primary">Kembali</Link>
+      <Link to="/" className="btn btn-primary">
+        Kembali
+      </Link>
 
       <table className="table">
         <tbody>
           <tr>
             <td>Image</td>
-            <td>: 
+            <td>
+              :
               {product.image ? (
-                <img 
-                  src={`https://cruds-eduwork-server.onrender.com/uploads/${product.image}`} 
-                  alt={product.name} 
-                  width="300" 
+                <img
+                  src={`https://cruds-eduwork-server.onrender.com${product.image}`}
+                  alt={product.name}
+                  width="300"
                 />
               ) : (
-                ' No image available'
+                " No image available"
               )}
             </td>
           </tr>
@@ -68,7 +73,7 @@ const Detail = () => {
           </tr>
           <tr>
             <td>Status</td>
-            <td>: {product.status ? 'Available' : 'Unavailable'}</td>
+            <td>: {product.status ? "Available" : "Unavailable"}</td>
           </tr>
         </tbody>
       </table>

@@ -1,28 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
-import './index.scss';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import "./index.scss";
 
 const validationSchema = Yup.object({
-  name: Yup.string().required('Nama produk diperlukan'),
-  price: Yup.number().required('Harga produk diperlukan').positive('Harga harus positif'),
-  stock: Yup.number().required('Stock produk diperlukan').min(0, 'Stock tidak boleh negatif'),
-  status: Yup.boolean()
+  name: Yup.string().required("Nama produk diperlukan"),
+  price: Yup.number()
+    .required("Harga produk diperlukan")
+    .positive("Harga harus positif"),
+  stock: Yup.number()
+    .required("Stock produk diperlukan")
+    .min(0, "Stock tidak boleh negatif"),
+  status: Yup.boolean(),
 });
 
 const Edit = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({
-    name: '',
-    price: '',
-    stock: '',
+    name: "",
+    price: "",
+    stock: "",
     status: false,
-    image: ''
+    image: "",
   });
   const [newImage, setNewImage] = useState(null);
   const [imageSelected, setImageSelected] = useState(false);
@@ -30,17 +34,19 @@ const Edit = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`https://cruds-eduwork-server.onrender.com/api/v2/product/${id}`);
+        const response = await fetch(
+          `https://cruds-eduwork-server.onrender.com/api/v2/product/${id}`
+        );
         const data = await response.json();
         setProduct({
           name: data.name,
           price: data.price,
           stock: data.stock,
           status: data.status,
-          image: data.image
+          image: data.image,
         });
       } catch (error) {
-        console.error('Error fetching product data:', error);
+        console.error("Error fetching product data:", error);
       }
     };
 
@@ -52,56 +58,59 @@ const Edit = () => {
       name: product.name,
       price: product.price,
       stock: product.stock,
-      status: product.status
+      status: product.status,
     },
     validationSchema: validationSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
       const formData = new FormData();
-      formData.append('name', values.name);
-      formData.append('price', values.price);
-      formData.append('stock', values.stock);
-      formData.append('status', values.status);
+      formData.append("name", values.name);
+      formData.append("price", values.price);
+      formData.append("stock", values.stock);
+      formData.append("status", values.status);
       if (newImage) {
-        formData.append('image', newImage);
+        formData.append("image", newImage);
       }
 
       confirmAlert({
-        title: 'Konfirmasi',
-        message: 'Apakah Anda yakin ingin menyimpan perubahan?',
+        title: "Konfirmasi",
+        message: "Apakah Anda yakin ingin menyimpan perubahan?",
         buttons: [
           {
-            label: 'Iya',
+            label: "Iya",
             onClick: async () => {
               try {
-                const response = await fetch(`https://cruds-eduwork-server.onrender.com/api/v2/product/${id}`, {
-                  method: 'PUT',
-                  body: formData
-                });
+                const response = await fetch(
+                  `https://cruds-eduwork-server.onrender.com/api/v2/product/${id}`,
+                  {
+                    method: "PUT",
+                    body: formData,
+                  }
+                );
 
                 if (!response.ok) {
-                  throw new Error('Gagal memperbarui produk');
+                  throw new Error("Gagal memperbarui produk");
                 }
 
-                toast.success('Produk berhasil diperbarui!');
+                toast.success("Produk berhasil diperbarui!");
               } catch (error) {
                 toast.error(error.message);
               }
-            }
+            },
           },
           {
-            label: 'Batal',
-            onClick: () => toast.info('Perubahan dibatalkan.')
-          }
-        ]
+            label: "Batal",
+            onClick: () => toast.info("Perubahan dibatalkan."),
+          },
+        ],
       });
-    }
+    },
   });
 
   const handleImageChange = (event) => {
     setNewImage(event.target.files[0]);
     setImageSelected(true);
-    formik.setFieldValue('image', event.target.files[0]);
+    formik.setFieldValue("image", event.target.files[0]);
   };
 
   return (
@@ -123,7 +132,7 @@ const Edit = () => {
               <div className="error">{formik.errors.name}</div>
             ) : null}
           </div>
-          
+
           <div className="form-group">
             <label>Harga Produk</label>
             <input
@@ -166,16 +175,18 @@ const Edit = () => {
             <label>Gambar Produk</label>
             {product.image && !imageSelected && (
               <div className="image-container">
-                <img 
-                  src={`https://cruds-eduwork-server.onrender.com/uploads/${product.image}`} 
-                  alt="Produk" 
-                  className="product-image" 
+                <img
+                  src={`https://cruds-eduwork-server.onrender.com${product.image}`}
+                  alt={product.name}
+                  className="product-image"
                   width="100"
                 />
                 <div className="overlay">
-                  <span 
-                    className="change-image-text" 
-                    onClick={() => document.getElementById('imageInput').click()}
+                  <span
+                    className="change-image-text"
+                    onClick={() =>
+                      document.getElementById("imageInput").click()
+                    }
                   >
                     Ganti gambar
                   </span>
@@ -186,23 +197,25 @@ const Edit = () => {
               type="file"
               id="imageInput"
               onChange={handleImageChange}
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
             />
           </div>
 
-          <button type="submit" className="btn btn-primary">Simpan</button>
+          <button type="submit" className="btn btn-primary">
+            Simpan
+          </button>
         </form>
       </div>
-      <ToastContainer 
-        position="top-right" 
-        autoClose={4000} 
-        hideProgressBar={false} 
-        newestOnTop={false} 
-        closeOnClick 
-        rtl={false} 
-        pauseOnFocusLoss 
-        draggable 
-        pauseOnHover 
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
       />
     </div>
   );
