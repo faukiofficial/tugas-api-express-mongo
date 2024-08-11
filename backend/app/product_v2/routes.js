@@ -54,24 +54,23 @@ router.post("/product", upload.single("image"), async (req, res) => {
   const { name, price, stock, status } = req.body;
   const image = req.file;
 
-  try {
-    let imagePath;
-    if (image) {
-      imagePath = `/uploads/${image.filename}`;
+  if (!image) {
+      return res.status(400).json({ message: 'Please upload an image' });
     }
-
-    const newProduct = await Product.create({
-      name,
+  const imagePath = `/uploads/${image.filename}`;
+  const product = new Product({
+    name,
       price,
       stock,
       status,
       image: imagePath
-    });
-
-    res.send(newProduct);
-  } catch (error) {
-    res.status(500).send(error);
-  }
+  })
+  try {
+      const savedProduct = await product.save();
+      res.status(201).json(savedProduct);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
 });
 
 // Update by ID
