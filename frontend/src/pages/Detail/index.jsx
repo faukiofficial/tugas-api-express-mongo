@@ -52,8 +52,6 @@ const Detail = () => {
                 " No image available"
               )}
             </td>
-            <td>
-            </td>
           </tr>
           <tr>
             <td>ID</td>
