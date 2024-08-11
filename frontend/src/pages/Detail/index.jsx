@@ -39,20 +39,18 @@ const Detail = () => {
       </Link>
 
       <table className="table">
-        <tbody>
-          <tr>
-            <td>
-              {product.image ? (
+        {product.image ? (
+              <div>
                 <img
                   src={`https://cruds-eduwork-server.onrender.com${product.image}`}
                   alt={product.name}
                   width="300"
                 />
+              </div>
               ) : (
-                " No image available"
+                "No image available"
               )}
-            </td>
-          </tr>
+        <tbody>
           <tr>
             <td>ID</td>
             <td>: {product._id}</td>
