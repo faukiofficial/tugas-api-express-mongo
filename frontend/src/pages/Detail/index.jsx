@@ -41,9 +41,7 @@ const Detail = () => {
       <table className="table">
         <tbody>
           <tr>
-            <td>Image</td>
             <td>
-              :
               {product.image ? (
                 <img
                   src={`https://cruds-eduwork-server.onrender.com${product.image}`}
@@ -53,6 +51,8 @@ const Detail = () => {
               ) : (
                 " No image available"
               )}
+            </td>
+            <td>
             </td>
           </tr>
           <tr>
